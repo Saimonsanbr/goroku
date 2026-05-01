@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# logs
+*.log
+
+# node (caso use no futuro)
+node_modules/
+
+# build outputs
+dist/
+build/
+
+# env
+.env
+
+# misc
+*.zip
+*.tmp
+
+# IDE
+.vscode/
+.idea/

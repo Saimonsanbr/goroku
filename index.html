@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>語録 — Banco de Frases em Japonês</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Nunito:ital,wght@0,400;0,700;1,400&family=Varela+Round&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Modules -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <!-- Background Animation -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Header -->
+    <header>
+        <div class="header-kanji-bg">語</div>
+        <div class="header-inner">
+            <div class="header-eyebrow">
+                <span class="eyebrow-text">語録 • goroku</span>
+            </div>
+            <h1>Banco de <span class="red">Frases</span> Japonesas</h1>
+            <p class="subtitle">Pesquise em japonês, kanji ou português</p>
+            <div class="search-wrap">
+                <input type="text" class="search-box" id="searchInput" placeholder="日本語で検索... ou em português..."
+                    autocomplete="off" autocorrect="off" spellcheck="false">
+                <span class="search-icon">⌕</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="status-bar" id="statusBar">
+            <span class="status-count" id="statusCount"><strong>—</strong> frases</span>
+            <span class="status-hint">carregando banco...</span>
+        </div>
+        <div id="phraseList" class="phrase-list">
+            <div class="loading">carregando</div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">
+                site desenvolvido por
+                <a href="https://instagram.com/indigena.dev" target="_blank" class="footer-link">@indigena.dev</a>
+            </p>
+            <p class="footer-subtext">
+                um site feito de um estudante para estudantes.<br>
+                <span class="footer-coming">mais ferramentas em breve ✦</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JS Modules (type="module" para imports) -->
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+:root {
+    /* Paleta Clean e Amigável */
+    --bg: #F0F4F8;
+    --bg2: #E2E8F0;
+    --surface: #FFFFFF;
+    --surface-hover: #FAFCFF;
+    --border: #E2E8F0;
+    --border-light: #CBD5E1;
+
+    --text: #334155;
+    --text-muted: #64748B;
+    --text-dim: #94A3B8;
+
+    --primary: #FF7EB3;
+    --primary-hover: #FF629F;
+    --primary-pale: #FFE4EE;
+
+    --secondary: #38BDF8;
+    --secondary-pale: #E0F2FE;
+
+    --radius-card: 24px;
+    --radius-pill: 9999px;
+
+    --font-jp: 'M PLUS Rounded 1c', sans-serif;
+    --font-lat: 'Nunito', sans-serif;
+    --font-mono: 'Varela Round', sans-serif;
+}
