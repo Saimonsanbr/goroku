@@ -4,9 +4,9 @@
 
 # goroku
 
-**Construa decks personalizados de japonês direto no navegador — exporte para o Anki com um clique**
+**Monte decks personalizados de japonês com áudio e exporte para o Anki em segundos**
 
-*Projeto pessoal em evolução — contribuições são bem-vindas*
+*100% no navegador. Sem login. Sem backend. Sem sofrimento.*
 
 [![License](https://img.shields.io/badge/license-MIT-black?style=flat-square)](LICENSE)
 [![Built with JavaScript](https://img.shields.io/badge/built_with-JavaScript-black?style=flat-square)]()
@@ -14,139 +14,273 @@
 
 <br/>
 
+<a href="SEU_LINK_DE_DOACAO_AQUI">
+  <img src="https://img.shields.io/badge/☕%20Me%20pague%20um%20café-black?style=for-the-badge" />
+</a>
+
 </div>
 
 ---
 
-## 🧠 O que é isso?
+# 🚀 O que é isso?
 
-O **goroku** é um site que permite:
+O **goroku** é uma ferramenta para aprender japonês de forma prática:
 
-- 🔍 Buscar frases em japonês
-- 🎧 Ouvir áudio nativo
-- 📚 Montar seus próprios decks
-- 📦 Exportar tudo pro Anki (com áudio incluso)
+- 🔍 Busque frases reais
+- 🎧 Ouça áudio nativo
+- 📚 Monte seus próprios decks
+- 📦 Exporte direto para o Anki (com áudio)
 
-Tudo direto no navegador. Sem login. Sem backend. Sem complicação.
+Tudo isso:
 
----
-
-## 💡 Ideia principal
-
-Você encontra frases úteis → adiciona ao deck → exporta → estuda no Anki.
-
-Simples assim.
+> **rodando 100% no navegador — sem login, sem conta, sem backend**
 
 ---
 
-## ⚠️ Introdução honesta
+# ⚡ Como funciona (em 10 segundos)
 
-Isso é um projeto pessoal.
+1. Pesquise uma frase  
+2. Clique em **+ adicionar ao deck**  
+3. Abra o menu de cards  
+4. Exporte para o Anki  
 
-Não é perfeito. Provavelmente tem bugs.  
-Mas resolve um problema real: criar decks de forma rápida, personalizada e com áudio.
-
-Se funcionar pra você, ótimo.  
-Se quebrar, me avisa 😄
-
----
-
-## 🚀 Como usar (atualmente)
-
-1. Pesquise frases
-2. Clique em **adicionar ao deck**
-3. Abra o menu de cards
-4. Exporte para o Anki
-
-*(algumas features ainda estão em desenvolvimento)*
+Pronto.
 
 ---
 
-## 🧩 Funcionalidades atuais
-
-- 🔎 Busca local de frases
-- 🎧 Reprodução de áudio
-- 📄 Paginação
-- 🎨 UI leve e rápida
-
----
-
-## 🧠 Funcionalidades em desenvolvimento
-
-- 📦 Exportação completa para Anki (txt + áudio)
-- 🧾 Histórico de frases exportadas
-- ✏️ Edição de cards antes da exportação
-- 📊 Sistema de progresso
-
----
-
-## 🚧 Funcionalidades planejadas
-
-- Furigana opcional
-- Estatísticas de aprendizado
-- Sistema de revisão
-- Recomendações inteligentes
-
----
-
-## 🖥️ Futuro
-
-👉 Versão desktop está planejada
-
-A ideia é permitir:
-
-- uso offline
-- gerenciamento de decks local
-- integração mais direta com Anki
-
-*(sem promessas, mas a vontade existe)*
-
----
-
-## 🛠️ Tecnologias
-
-- JavaScript (Vanilla)
-- IndexedDB (Dexie.js — em breve)
-- JSZip (exportação)
-- HTML + CSS modular
-
----
-
-## 📁 Estrutura do projeto
+# 🧠 Fluxo real de uso
 
 ```
 
-/css
-/js
-/assets
-index.html
+Buscar → Selecionar → Revisar → Exportar → Estudar no Anki
+
+```
+
+---
+
+# 🧩 Funcionalidades principais
+
+### 📚 Deck Builder local
+- Adicione frases com um clique
+- Evita duplicatas automaticamente
+- Deck persistente no navegador
+
+---
+
+### ✏️ Edição de cards
+- Edite japonês e tradução antes de exportar
+- **Nunca altera o banco original**
+- Botão de **restaurar original**
+
+---
+
+### 🎧 Áudio integrado
+- Reprodução direta
+- Exportação com áudio no Anki
+- Conversão automática para compatibilidade
+
+---
+
+### 📦 Exportação inteligente
+
+#### 🟢 Opção 1 — AnkiConnect (recomendado)
+- Envia direto para o Anki
+- Já cria os cards automaticamente
+- Inclui áudio no Front
+
+#### 🟡 Opção 2 — `.txt`
+- Baixa arquivo para importação manual
+- Funciona sempre (fallback universal)
+
+---
+
+### 📚 Histórico inteligente
+- Detecta frases já exportadas
+- Evita repetição acidental
+- Base para futuras estatísticas
+
+---
+
+# ⚙️ Como usar com Anki (automático)
+
+Para enviar direto ao Anki com áudio, você precisa do plugin:
+
+👉 **AnkiConnect (código: 2055492159)**
+
+---
+
+## 🧠 Passo a passo
+
+### 1. Instalar o plugin
+
+No Anki:
+
+```
+
+Tools → Add-ons → Get Add-ons
+
+```
+
+Cole o código:
+
+```
+
+2055492159
+
+```
+
+Reinicie o Anki.
+
+---
+
+### 2. Deixar o Anki aberto
+
+👉 O goroku se conecta via:
+
+```
+
+[http://localhost:8765](http://localhost:8765)
+
+````
+
+Se o Anki estiver fechado → não funciona
+
+---
+
+### 3. Usar no goroku
+
+- Clique em **Exportar → Enviar para Anki**
+- Escolha o deck (ou crie um novo)
+- Pronto 🎉
+
+---
+
+## ⚠️ Observações importantes
+
+- Funciona apenas em desktop
+- Não funciona em celular
+- Se falhar → use export `.txt`
+
+---
+
+# 🧠 Arquitetura (resumo técnico)
+
+O projeto segue um modelo **local-first** com separação clara de dados:
+
+---
+
+## 🔒 Fonte da verdade (imutável)
+
+```txt
 traduzido_pt.json
+````
 
+* Nunca é alterado
+* Base completa de frases
+
+---
+
+## ✏️ Camada editável (IndexedDB)
+
+```txt
+deck
 ```
 
----
-
-## 🧠 Filosofia
-
-- sem dependências pesadas
-- tudo no client
-- rápido e direto
-- feito pra uso real, não só pra demo
+* Cópias das frases
+* Pode editar livremente
+* Persiste entre sessões
 
 ---
 
-## 🤝 Contribuindo
+## 📚 Histórico persistente
 
-Se quiser contribuir:
+```txt
+history
+```
 
-- abre uma issue
-- manda PR
-- sugere ideias
-
-Ou só usa o projeto e já ajuda bastante.
+* Registra exportações
+* Permite detectar duplicatas
+* Base para futuras features
 
 ---
 
-## 📜 Licença
+## 🧩 Organização modular
+
+```txt
+/js
+├── core
+├── search
+├── audio
+├── renderer
+├── deck system
+├── export system
+```
+
+Cada módulo tem responsabilidade única — sem acoplamento desnecessário.
+
+---
+
+# 🛠️ Tecnologias
+
+* JavaScript (Vanilla)
+* IndexedDB (Dexie.js)
+* HTML + CSS modular
+* AnkiConnect (integração local)
+
+---
+
+# 🧠 Filosofia do projeto
+
+* ⚡ rápido
+* 🧩 modular
+* 💻 100% client-side
+* 🧠 pensado pra uso real
+* ❌ sem dependências pesadas
+
+---
+
+# 🚧 Em desenvolvimento
+
+* Furigana automático
+* Estatísticas de uso
+* Favoritos
+* Melhorias no export
+
+---
+
+# 🖥️ Futuro
+
+👉 Versão desktop planejada
+
+Objetivo:
+
+* uso offline completo
+* melhor integração com Anki
+* gerenciamento avançado de decks
+
+---
+
+# 🤝 Contribuindo
+
+Achou útil?
+
+* ⭐ dá uma estrela
+* 🐛 reporta bugs
+* 💡 sugere ideias
+* 🔧 manda PR
+
+---
+
+# ☕ Apoiar o projeto
+
+Se isso te ajudou de alguma forma:
+
+👉 considere me pagar um café
+
+(link no topo ☝️)
+
+---
+
+# 📜 Licença
 
 MIT
