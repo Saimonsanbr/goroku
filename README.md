@@ -26,10 +26,10 @@
 
 O **goroku** é uma ferramenta para aprender japonês de forma prática:
 
-- 🔍 Busque frases reais
-- 🎧 Ouça áudio nativo
-- 📚 Monte seus próprios decks
-- 📦 Exporte direto para o Anki (com áudio)
+* 🔍 Busque frases reais
+* 🎧 Ouça áudio nativo
+* 📚 Monte seus próprios decks
+* 📦 Exporte direto para o Anki (com áudio)
 
 Tudo isso:
 
@@ -39,10 +39,10 @@ Tudo isso:
 
 # ⚡ Como funciona (em 10 segundos)
 
-1. Pesquise uma frase  
-2. Clique em **+ adicionar ao deck**  
-3. Abra o menu de cards  
-4. Exporte para o Anki  
+1. Pesquise uma frase
+2. Clique em **+ adicionar ao deck**
+3. Abra o menu de cards
+4. Exporte para o Anki
 
 Pronto.
 
@@ -51,9 +51,7 @@ Pronto.
 # 🧠 Fluxo real de uso
 
 ```
-
 Buscar → Selecionar → Revisar → Exportar → Estudar no Anki
-
 ```
 
 ---
@@ -61,43 +59,49 @@ Buscar → Selecionar → Revisar → Exportar → Estudar no Anki
 # 🧩 Funcionalidades principais
 
 ### 📚 Deck Builder local
-- Adicione frases com um clique
-- Evita duplicatas automaticamente
-- Deck persistente no navegador
+
+* Adicione frases com um clique
+* Evita duplicatas automaticamente
+* Deck persistente no navegador
 
 ---
 
 ### ✏️ Edição de cards
-- Edite japonês e tradução antes de exportar
-- **Nunca altera o banco original**
-- Botão de **restaurar original**
+
+* Edite japonês e tradução antes de exportar
+* **Nunca altera o banco original**
+* Botão de **restaurar original**
 
 ---
 
 ### 🎧 Áudio integrado
-- Reprodução direta
-- Exportação com áudio no Anki
-- Conversão automática para compatibilidade
+
+* Reprodução direta
+* Exportação com áudio no Anki
+* Conversão automática para compatibilidade
 
 ---
 
 ### 📦 Exportação inteligente
 
 #### 🟢 Opção 1 — AnkiConnect (recomendado)
-- Envia direto para o Anki
-- Já cria os cards automaticamente
-- Inclui áudio no Front
+
+* Envia direto para o Anki
+* Já cria os cards automaticamente
+* Inclui áudio no Front
 
 #### 🟡 Opção 2 — `.txt`
-- Baixa arquivo para importação manual
-- Funciona sempre (fallback universal)
+
+* Baixa arquivo para importação manual
+* Funciona sempre (fallback universal)
 
 ---
 
 ### 📚 Histórico inteligente
-- Detecta frases já exportadas
-- Evita repetição acidental
-- Base para futuras estatísticas
+
+* Detecta frases já exportadas
+* Evita repetição acidental
+* Base para futuras estatísticas
 
 ---
 
@@ -116,64 +120,136 @@ Para enviar direto ao Anki com áudio, você precisa do plugin:
 No Anki:
 
 ```
-
 Tools → Add-ons → Get Add-ons
-
 ```
 
 Cole o código:
 
 ```
-
 2055492159
-
 ```
 
 Reinicie o Anki.
 
 ---
 
-### 2. Deixar o Anki aberto
+### ⚠️ Se não funcionar (90% dos casos)
 
-👉 O goroku se conecta via:
-
-```
-
-[http://localhost:8765](http://localhost:8765)
-
-````
-
-Se o Anki estiver fechado → não funciona
+> ⚠️ Se o botão “Enviar para Anki” não funcionar,
+> na maioria das vezes é por causa dessa configuração abaixo.
 
 ---
 
-### 3. Usar no goroku
+### 2. Configurar o AnkiConnect (IMPORTANTE)
 
-- Clique em **Exportar → Enviar para Anki**
-- Escolha o deck (ou crie um novo)
-- Pronto 🎉
+Por padrão, o Anki bloqueia conexões externas (CORS).
+Você precisa liberar o goroku manualmente.
+
+---
+
+#### 📂 Abra o arquivo de configuração
+
+No Anki:
+
+```
+Tools → Add-ons → AnkiConnect → Config
+```
+
+---
+
+#### ✏️ Substitua por isso:
+
+```json
+{
+  "apiKey": null,
+  "apiLogPath": null,
+  "webBindAddress": "127.0.0.1",
+  "webBindPort": 8765,
+  "webCorsOriginList": [
+    "http://localhost",
+    "http://127.0.0.1",
+    "https://goroku.pages.dev"
+  ],
+  "ignoreOriginList": []
+}
+```
+
+---
+
+#### ⚠️ Importante
+
+* ❌ NÃO coloque `/` no final da URL
+* ❌ `"https://goroku.pages.dev/"` → quebra
+* ✅ `"https://goroku.pages.dev"` → correto
+
+---
+
+### 3. Reiniciar o Anki
+
+👉 Feche completamente o Anki e abra novamente
+
+---
+
+### 4. Deixar o Anki aberto
+
+O goroku se conecta via:
+
+```
+http://127.0.0.1:8765
+```
+
+👉 Se o Anki estiver fechado → não funciona
+
+---
+
+### 5. Usar no goroku
+
+* Clique em **Exportar → Enviar para Anki**
+* Escolha o deck (ou crie um novo)
+* Pronto 🎉
 
 ---
 
 ## ⚠️ Observações importantes
 
-- Funciona apenas em desktop
-- Não funciona em celular
-- Se falhar → use export `.txt`
+* 💻 Funciona apenas em desktop
+* 📱 Não funciona em celular
+* 🔒 Comunicação é local (nada vai pra internet)
+* ❌ Se der erro → geralmente é configuração do AnkiConnect
+* 🟡 Sempre existe fallback via `.txt`
+
+---
+
+## 🧪 Teste rápido (debug)
+
+Abra o console do navegador e rode:
+
+```js
+fetch("http://127.0.0.1:8765", {
+  method: "POST",
+  body: JSON.stringify({ action: "version", version: 6 })
+})
+.then(r => r.json())
+.then(console.log)
+```
+
+Se retornar:
+
+```json
+{ "result": 6, "error": null }
+```
+
+👉 Está funcionando
 
 ---
 
 # 🧠 Arquitetura (resumo técnico)
 
-O projeto segue um modelo **local-first** com separação clara de dados:
-
----
-
 ## 🔒 Fonte da verdade (imutável)
 
-```txt
+```
 traduzido_pt.json
-````
+```
 
 * Nunca é alterado
 * Base completa de frases
@@ -182,7 +258,7 @@ traduzido_pt.json
 
 ## ✏️ Camada editável (IndexedDB)
 
-```txt
+```
 deck
 ```
 
@@ -194,19 +270,19 @@ deck
 
 ## 📚 Histórico persistente
 
-```txt
+```
 history
 ```
 
 * Registra exportações
-* Permite detectar duplicatas
+* Detecta duplicatas
 * Base para futuras features
 
 ---
 
 ## 🧩 Organização modular
 
-```txt
+```
 /js
 ├── core
 ├── search
@@ -216,8 +292,6 @@ history
 ├── export system
 ```
 
-Cada módulo tem responsabilidade única — sem acoplamento desnecessário.
-
 ---
 
 # 🛠️ Tecnologias
@@ -225,7 +299,7 @@ Cada módulo tem responsabilidade única — sem acoplamento desnecessário.
 * JavaScript (Vanilla)
 * IndexedDB (Dexie.js)
 * HTML + CSS modular
-* AnkiConnect (integração local)
+* AnkiConnect
 
 ---
 
@@ -234,7 +308,7 @@ Cada módulo tem responsabilidade única — sem acoplamento desnecessário.
 * ⚡ rápido
 * 🧩 modular
 * 💻 100% client-side
-* 🧠 pensado pra uso real
+* 🧠 feito pra uso real
 * ❌ sem dependências pesadas
 
 ---
@@ -255,14 +329,12 @@ Cada módulo tem responsabilidade única — sem acoplamento desnecessário.
 Objetivo:
 
 * uso offline completo
-* melhor integração com Anki
-* gerenciamento avançado de decks
+* integração melhor com Anki
+* gerenciamento avançado
 
 ---
 
 # 🤝 Contribuindo
-
-Achou útil?
 
 * ⭐ dá uma estrela
 * 🐛 reporta bugs
@@ -273,7 +345,7 @@ Achou útil?
 
 # ☕ Apoiar o projeto
 
-Se isso te ajudou de alguma forma:
+Se isso te ajudou:
 
 👉 considere me pagar um café
 
