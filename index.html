@@ -13,6 +13,10 @@
         href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&family=Nunito:ital,wght@0,400;0,700;1,400&family=Varela+Round&display=swap"
         rel="stylesheet">
 
+    <!-- Libraries para Deck Builder -->
+    <script src="https://unpkg.com/dexie@3.2.4/dist/dexie.js"></script>
+    <script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
+
     <!-- CSS Modules -->
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
@@ -30,6 +34,11 @@
         <div class="header-inner">
             <div class="header-eyebrow">
                 <span class="eyebrow-text">語録 • goroku</span>
+                <!-- Deck Counter -->
+                <button id="deckCounterBtn" class="deck-counter" title="Ver meus cards">
+                    <span class="deck-count">0</span>
+                    <span class="deck-label">cards</span>
+                </button>
             </div>
             <h1>Banco de <span class="red">Frases</span> Japonesas</h1>
             <p class="subtitle">Pesquise em japonês, kanji ou português</p>
@@ -51,6 +60,148 @@
             <div class="loading">carregando</div>
         </div>
     </main>
+
+    <!-- Deck Modal -->
+    <div id="deckModal" class="modal-overlay" hidden>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Meu Deck <span id="modalCardCount">(0)</span></h2>
+                <button class="modal-close" id="modalCloseBtn" aria-label="Fechar">✕</button>
+            </div>
+
+            <div class="modal-actions">
+                <button id="clearDeckBtn" class="btn-secondary">🗑️ Limpar deck</button>
+                <button id="exportBtn" class="btn-primary">📦 Exportar para Anki</button>
+            </div>
+
+            <div id="deckList" class="deck-list">
+                <!-- Cards inseridos via JS -->
+            </div>
+
+            <div id="deckEmpty" class="deck-empty" hidden>
+                <span class="kanji-big">空</span>
+                <p>Seu deck está vazio.<br>Adicione frases para começar!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Card Modal -->
+    <div id="editModal" class="modal-overlay" hidden>
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Editar Card</h2>
+                <button class="modal-close" id="editCloseBtn" aria-label="Fechar">✕</button>
+            </div>
+
+            <form id="editForm">
+                <input type="hidden" id="editCardId">
+
+                <div class="form-group">
+                    <label for="editJap">Japonês</label>
+                    <textarea id="editJap" class="form-input" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editPt">Português</label>
+                    <textarea id="editPt" class="form-input" rows="2"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Áudio</label>
+                    <div class="audio-preview">
+                        <span id="editAudioName" class="audio-name">—</span>
+                        <button type="button" id="editAudioPlay" class="audio-btn-small">▶</button>
+                    </div>
+                    <small class="form-hint">Áudio não pode ser editado</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" id="restoreOriginalBtn" class="btn-text">🔄 Restaurar original</button>
+                    <div class="form-buttons">
+                        <button type="button" id="editCancelBtn" class="btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn-primary">Salvar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Export Progress Modal -->
+    <!-- Export Modal (2 caminhos) -->
+    <div id="exportModal" class="modal-overlay" hidden>
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Exportar Deck</h2>
+                <button class="modal-close" id="exportCloseBtn" aria-label="Fechar">✕</button>
+            </div>
+
+            <!-- Opções de Exportação -->
+            <div class="export-methods">
+                <button id="exportTxtBtn" class="export-method-btn">
+                    <span class="export-method-icon">📄</span>
+                    <div class="export-method-info">
+                        <strong>Exportar como .txt</strong>
+                        <small>Sem áudio • Importação manual</small>
+                    </div>
+                </button>
+
+                <button id="exportAnkiBtn" class="export-method-btn">
+                    <span class="export-method-icon">🔄</span>
+                    <div class="export-method-info">
+                        <strong>Enviar para o Anki</strong>
+                        <small>Com áudio • Requer AnkiConnect</small>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Seletor de Deck (só aparece para Anki) -->
+            <div id="ankiDeckSection" class="anki-deck-section" hidden>
+                <div class="form-group">
+                    <label for="ankiDeckSelect">Escolha ou crie um deck</label>
+                    <select id="ankiDeckSelect" class="form-input">
+                        <option value="">Carregando decks...</option>
+                    </select>
+                    <input type="text" id="ankiDeckCustom" class="form-input"
+                        placeholder="Ou digite um novo nome de deck..." style="margin-top: 8px; display: none;">
+                    <small class="form-hint">Se o deck não existir, o Anki criará automaticamente</small>
+                </div>
+
+                <div class="anki-connect-status" id="ankiConnectStatus">
+                    <span class="status-dot"></span>
+                    <span id="ankiConnectText">Verificando AnkiConnect...</span>
+                </div>
+
+                <div id="ankiConnectHint" class="export-hint" hidden>
+                    💡 Não detectamos o AnkiConnect.
+                    <a href="https://ankiweb.net/shared/info/2055492159" target="_blank" class="hint-link">Instale o
+                        add-on</a>
+                    e mantenha o Anki aberto.
+                </div>
+            </div>
+
+            <!-- Progresso/Resultado -->
+            <div id="exportProgress" class="export-progress" hidden>
+                <div class="progress-spinner"></div>
+                <p id="exportStatus">Preparando...</p>
+                <div class="progress-bar" hidden>
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="exportDetails" class="progress-details"></p>
+            </div>
+
+            <div id="exportComplete" hidden>
+                <p class="success-message" id="completeMessage">✅ Concluído!</p>
+                <p class="export-instructions" id="completeInstructions"></p>
+                <button id="exportAgainBtn" class="btn-secondary">Fechar</button>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="modal-actions export-actions" id="exportActions">
+                <button id="exportCancelBtn" class="btn-secondary">Cancelar</button>
+                <button id="exportConfirmBtn" class="btn-primary" hidden>Confirmar</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer>

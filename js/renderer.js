@@ -32,11 +32,15 @@ export function renderCard(phrase, query, index) {
     const delay = (index % CONFIG.PAGE_SIZE) * 15;
     const hasAudio = !!phrase.audio_jap;
     const noAudio = hasAudio ? '' : ' no-audio';
+    // ... dentro de renderCard, após a definição de noAudio ...
+
+    // Verificar se já está no deck (para estado inicial do botão)
+    const inDeck = false; // Será atualizado via JS após carregar
 
     return `
 <article class="phrase-card" style="animation-delay:${delay}ms"
          data-audio="${escapeHtml(phrase.audio_jap || '')}"
-         data-card-id="${index}">
+         data-card-id="${phrase.id}">
   <div class="card-top">
     <div class="card-text">
       <div class="phrase-jap">${highlight(phrase.jap, query)}</div>
@@ -52,13 +56,15 @@ export function renderCard(phrase, query, index) {
       <span class="tag">fonte: ${escapeHtml(src)}</span>
       ${level ? `<span class="tag tag-level">${level}</span>` : ''}
     </div>
-    <div class="waveform">
-      <div class="waveform-bar"></div><div class="waveform-bar"></div>
-      <div class="waveform-bar"></div><div class="waveform-bar"></div>
-      <div class="waveform-bar"></div>
-    </div>
+    <!-- Botão Adicionar ao Deck -->
+    <button class="add-to-deck-btn ${inDeck ? 'in-deck' : ''}" 
+            title="${inDeck ? 'Já está no deck' : 'Adicionar ao deck'}"
+            ${inDeck ? 'disabled' : ''}>
+      ${inDeck ? '✓' : '+'}
+    </button>
   </div>
 </article>`;
+
 }
 
 export function renderEmptyState(message = 'Ops! Nenhuma frase encontrada para essa busca.', kanji = '無') {

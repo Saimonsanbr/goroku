@@ -1,4 +1,4 @@
-// Ponto de entrada do app - importa e orquestra todos os módulos
+// Ponto de entrada do app - integra deck builder
 
 import { CONFIG } from './config.js';
 import { initBackground } from './background.js';
@@ -6,6 +6,7 @@ import { handlePlay, handleDownload, stopCurrent } from './audio.js';
 import { renderCard, renderEmptyState, updateStatus } from './renderer.js';
 import { createSearchHandler } from './search.js';
 import { initPagination, resetPagination } from './pagination.js';
+import { initDeckUI, updateAddToDeckButtons } from './deck-ui.js';
 
 // Estado global
 let allPhrases = [];
@@ -15,7 +16,7 @@ let currentQuery = '';
 // Elementos do DOM
 const phraseList = document.getElementById('phraseList');
 
-// Handler de busca (usar LET para permitir reatribuição após carregar dados)
+// Handler de busca
 let searchHandler = null;
 
 // Inicializa animação de fundo
@@ -30,14 +31,20 @@ function renderResults(results, query) {
     initPagination(phraseList, currentResults, currentQuery, (phrase, q) =>
         phrase ? renderCard(phrase, q, 0) : renderEmptyState()
     );
+    // Atualizar botões do deck após renderizar
+    setTimeout(updateAddToDeckButtons, 100);
 }
 
-// Inicializa o handler de busca
-function initSearch(phrases) {
+// Inicializar handlers
+function initApp(phrases) {
+    // Inicializar busca
     searchHandler = createSearchHandler(phrases, renderResults);
+
+    // Inicializar UI do deck
+    initDeckUI(phraseList, phrases);
 }
 
-// Event delegation para botões de áudio (usando capture para garantir)
+// Event delegation para botões de áudio
 phraseList.addEventListener('click', (e) => {
     const btn = e.target.closest('.audio-btn');
     if (!btn) return;
@@ -60,11 +67,17 @@ async function loadData() {
 
         allPhrases = await res.json();
 
+        // Garantir que cada frase tenha um id único
+        allPhrases = allPhrases.map((p, i) => ({
+            ...p,
+            id: p.id || `${p.source}_${i}_${Date.now()}`
+        }));
+
         // Atualiza UI inicial
         updateStatus(allPhrases.length, allPhrases.length, '');
 
-        // Inicializa busca com os dados carregados
-        initSearch(allPhrases);
+        // Inicializar app com os dados
+        initApp(allPhrases);
 
         // Renderiza lista inicial
         renderResults(allPhrases, '');
