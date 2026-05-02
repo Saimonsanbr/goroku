@@ -24,3 +24,6 @@ build/
 
 #wrangler
 .wrangler 
+
+#arquivos que não quero subir para o github
+detalhes_do_projeto.txt
