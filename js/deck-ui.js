@@ -9,22 +9,31 @@ import { exportDeck } from './export.js';
 import { isAnkiConnectAvailable, getAnkiDecks } from './anki-connect.js';
 import { escapeHtml, isMobile } from './utils.js';
 import { db } from './db.js';
+import { CONFIG } from './config.js';
+import {
+    shouldShowDeckHint,
+    showDeckOnboarding,
+    markDeckHintShown
+} from './onboarding.js';
 
 // Estado interno
 let allPhrases = [];
 let currentEditCard = null;
 let audioPreview = null;
-let exportMethod = null; // 'txt' | 'ankiconnect'
+let exportMethod = null;
+let tutorialVideoUrl = '';
 
 // ═══════════════════════════════════════════════════
 // INICIALIZAÇÃO
 // ═══════════════════════════════════════════════════
 
-export function initDeckUI(phraseListEl, phrases) {
+export function initDeckUI(phraseListEl, phrases, videoUrl = '') {
     allPhrases = phrases;
+    tutorialVideoUrl = videoUrl;
     updateDeckCounter();
     setupEventListeners(phraseListEl);
     observeDeckChanges();
+    initTutorialModal();
 }
 
 // ═══════════════════════════════════════════════════
@@ -104,7 +113,7 @@ function setupEventListeners(phraseListEl) {
     // Play audio no modal de edição
     document.getElementById('editAudioPlay')?.addEventListener('click', playEditAudio);
 
-    // Delegação para botões "Adicionar ao deck" nos cards (COM confirmação de histórico)
+    // Delegação para botões "Adicionar ao deck" nos cards
     phraseListEl?.addEventListener('click', async (e) => {
         const btn = e.target.closest('.add-to-deck-btn');
         if (!btn) return;
@@ -126,7 +135,6 @@ function setupEventListeners(phraseListEl) {
                     : 'Você já exportou esta frase antes. Deseja adicioná-la ao deck novamente?';
 
                 if (!confirm(confirmMsg)) {
-                    // Usuário cancelou: remover do deck
                     await removeFromDeck(phrase.id);
                     return;
                 }
@@ -138,6 +146,13 @@ function setupEventListeners(phraseListEl) {
             btn.title = 'Já está no deck';
             btn.disabled = true;
             updateDeckCounter();
+
+            // ✅ Trigger onboarding se for primeira vez adicionando card
+            if (await shouldShowDeckHint()) {
+                showDeckOnboarding();
+                markDeckHintShown();
+            }
+
             if (document.getElementById('deckModal')?.hidden === false) {
                 await renderDeckList();
             }
@@ -527,4 +542,47 @@ function handleExportCancel() {
 function closeExportModal() {
     document.getElementById('exportModal').hidden = true;
     resetExportModal();
+}
+
+// ═══════════════════════════════════════════════════
+// TUTORIAL MODAL
+// ═══════════════════════════════════════════════════
+
+function initTutorialModal() {
+    const modal = document.getElementById('tutorialModal');
+    const iframe = document.getElementById('tutorialVideo');
+    const closeBtn = document.getElementById('tutorialCloseBtn');
+    const tutorialBtn = document.getElementById('tutorialBtn');
+
+    if (!modal || !iframe || !closeBtn || !tutorialBtn) return;
+
+    // Abrir modal
+    tutorialBtn.addEventListener('click', () => {
+        if (tutorialVideoUrl) {
+            iframe.src = `${tutorialVideoUrl}?autoplay=1`;
+            modal.hidden = false;
+            document.body.style.overflow = 'hidden';
+        } else {
+            alert('URL do tutorial não configurada.');
+        }
+    });
+
+    // Fechar modal
+    function closeTutorial() {
+        modal.hidden = true;
+        iframe.src = '';
+        document.body.style.overflow = '';
+    }
+
+    closeBtn.addEventListener('click', closeTutorial);
+
+    // Fechar ao clicar fora
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeTutorial();
+    });
+
+    // Fechar com ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.hidden) closeTutorial();
+    });
 }

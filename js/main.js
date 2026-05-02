@@ -41,7 +41,7 @@ function initApp(phrases) {
     searchHandler = createSearchHandler(phrases, renderResults);
 
     // Inicializar UI do deck
-    initDeckUI(phraseList, phrases);
+    initDeckUI(phraseList, allPhrases, 'https://www.youtube.com/embed/ayx9WvHMHU8?si=yZquyUPyqGGr3jWs');
 }
 
 // Event delegation para botões de áudio

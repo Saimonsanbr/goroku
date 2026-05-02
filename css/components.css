@@ -943,3 +943,227 @@ mark {
         width: 100%;
     }
 }
+
+/* ═══════════════════════════════════════════════════
+   HEADER ACTIONS (GitHub + Tutorial buttons)
+   ═══════════════════════════════════════════════════ */
+
+.header-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.header-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.header-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-pale);
+    transform: translateY(-2px);
+}
+
+.header-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-pale);
+}
+
+/* ═══════════════════════════════════════════════════
+   TUTORIAL MODAL
+   ═══════════════════════════════════════════════════ */
+
+.modal-video {
+    max-width: 800px;
+    background: #000;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.video-caption {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    padding: 12px 0 0;
+    font-family: var(--font-mono);
+}
+
+/* ═══════════════════════════════════════════════════
+   ONBOARDING OVERLAY + TOOLTIP
+   ═══════════════════════════════════════════════════ */
+
+.onboarding-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 120px;
+    animation: fadeIn 0.3s ease;
+    cursor: pointer;
+}
+
+.onboarding-tooltip {
+    background: var(--surface);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-card);
+    padding: 16px 20px;
+    max-width: 280px;
+    text-align: center;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.4s ease;
+    pointer-events: none;
+}
+
+.onboarding-tooltip p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+    margin: 0 0 12px;
+    font-weight: 600;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Seta animada apontando para cima */
+.onboarding-arrow {
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+    position: relative;
+    animation: bounceArrow 1.5s ease-in-out infinite;
+}
+
+.onboarding-arrow::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 16px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.onboarding-arrow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 8px solid var(--primary);
+}
+
+@keyframes bounceArrow {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* ═══════════════════════════════════════════════════
+   DECK BUTTON HIGHLIGHT (pulse animation)
+   ═══════════════════════════════════════════════════ */
+
+.deck-counter.highlight-pulse {
+    animation: pulseHighlight 1.5s ease-in-out 3;
+    border-color: var(--primary);
+    background: var(--primary-pale);
+}
+
+@keyframes pulseHighlight {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 126, 179, 0.4);
+        transform: scale(1);
+    }
+
+    50% {
+        box-shadow: 0 0 0 12px rgba(255, 126, 179, 0);
+        transform: scale(1.05);
+    }
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════ */
+
+@media (max-width: 600px) {
+    .header-actions {
+        gap: 6px;
+    }
+
+    .header-btn {
+        width: 32px;
+        height: 32px;
+    }
+
+    .header-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .modal-video {
+        max-width: 100%;
+        margin: 0 12px;
+    }
+
+    .onboarding-tooltip {
+        max-width: 240px;
+        padding: 14px 16px;
+    }
+
+    .onboarding-tooltip p {
+        font-size: 13px;
+    }
+}
