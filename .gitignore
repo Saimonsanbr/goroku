@@ -27,3 +27,6 @@ build/
 
 #arquivos que não quero subir para o github
 detalhes_do_projeto.txt
+
+#pagina_de_doacao
+doe/

@@ -14,7 +14,7 @@
 
 <br/>
 
-<a href="SEU_LINK_DE_DOACAO_AQUI">
+<a href="https://goroku.pages.dev/doe/">
   <img src="https://img.shields.io/badge/☕%20Me%20pague%20um%20café-black?style=for-the-badge" />
 </a>
 
